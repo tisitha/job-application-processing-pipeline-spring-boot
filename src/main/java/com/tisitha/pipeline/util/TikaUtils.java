@@ -1,5 +1,7 @@
 package com.tisitha.pipeline.util;
 
+import com.tisitha.pipeline.exception.CorruptFileException;
+import com.tisitha.pipeline.exception.InvalidFileTypeException;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +17,7 @@ public class TikaUtils {
         try {
             return tika.parseToString(file.getInputStream());
         } catch (IOException | TikaException e) {
-            throw new RuntimeException(e);
+            throw new CorruptFileException(e.getMessage());
         }
     }
 
@@ -31,7 +33,7 @@ public class TikaUtils {
                     "application/vnd.oasis.opendocument.text"));
             return validFileTypes.contains(tika.detect(file.getInputStream()));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidFileTypeException(e.getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ public class TikaUtils {
             return extensionMap.getOrDefault(mimeType, "");
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidFileTypeException(e.getMessage());
         }
 
     }

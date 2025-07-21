@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tisitha.pipeline.dto.InputDto;
 import com.tisitha.pipeline.dto.ResumeData;
+import com.tisitha.pipeline.exception.InvalidJsonFormatException;
 
 public class ObjectMapperUtils {
 
@@ -13,7 +14,7 @@ public class ObjectMapperUtils {
         try {
             return objectMapper.readValue(dataString,ResumeData.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new InvalidJsonFormatException("ResumeData is invalid json format");
         }
     }
 
@@ -21,7 +22,7 @@ public class ObjectMapperUtils {
         try {
             return objectMapper.readValue(dataString,InputDto.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new InvalidJsonFormatException("InputDto is invalid json format");
         }
     }
 }

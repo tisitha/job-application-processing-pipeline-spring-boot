@@ -1,5 +1,7 @@
 package com.tisitha.pipeline.service;
 
+import com.tisitha.pipeline.exception.CorruptFileException;
+import com.tisitha.pipeline.exception.SupabaseUploadingErrorException;
 import com.tisitha.pipeline.util.TikaUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -47,7 +49,7 @@ public class SupabaseUploaderServiceImp implements SupabaseUploaderService{
         if (response.getStatusCode() == HttpStatus.OK) {
             return getPublicUrl(fileName);
         } else {
-            throw new RuntimeException("Upload failed");
+            throw new SupabaseUploadingErrorException("Supebase service failed."+ response);
         }
     }
 
@@ -59,7 +61,7 @@ public class SupabaseUploaderServiceImp implements SupabaseUploaderService{
         try {
             return file.getBytes();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CorruptFileException(e.getMessage());
         }
     }
 
